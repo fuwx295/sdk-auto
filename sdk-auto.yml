@@ -1,0 +1,108 @@
+auto:
+  port: 9502
+  trace_api: 10.0.2.15:4318
+  # Scan /proc to find new Process，attach instrument to new go app.
+  # If Set zero, close auto scan.
+  scan_interval: 30
+  black_list:
+    go:
+      apisix:
+        - apisix-ingress-* # apisix-ingress-controller
+      calico:
+        - calico-node
+        - kube-controller* # kube-controllers
+      chaos:
+        - chaos-* # chaos-backend、chaos-controller-manager、chaos-daemon、chaos-dashboard
+        - logserver
+      containerd:
+        - containerd* # containerd、containerd-shim
+        - image-cri-shim
+        - registry
+      deepflow-ce:
+        - deepflow-server
+        - gpx_*  # gpx_clickhouse_linux_amd64、gpx_deepflow-grafana-backend-plugin_linux_amd64、gpx_opensearch-datasource_linux_amd64
+        - grafana
+      docker:
+        - docker* # docker、docker-proxy
+        - runc
+        - runc:*  # runc:[2:INIT]
+      elastic:
+        - apm-server
+        - elastic-operato*  # elastic-operator
+      flannel:
+        - flanneld
+      flagd:
+        - flagd-build
+      go:
+        - dlv
+        - gopls
+      ingress-nginx:
+        - nginx-ingress-c* # nginx-ingress-controller
+      jaegertracing:
+        - agent-linux
+        - all-in-one-linu* # all-in-one-linux
+      k8s:
+        - coredns
+        - etcd
+        - kubectl
+        - kubelet
+        - kube-* # kube-apiserver、kube-controller、kube-proxy、kube-scheduler、kube-state-metrics
+      kind:
+        - kindnetd
+        - local-path-prov* # local-path-provisioner
+      kindling:
+        - camera-apm-adap* # camera-apm-adapter
+        - camera-receiver
+        - management  # user-instance-management
+        - metadata-provid* # metadata-provider
+        - meta-agent
+        - originx-gc-agen* # originx-gc-agent
+        - originx-sdk-aut* # originx-sdk-auto
+        - otel-go-instrum* # otel-go-instrumentation
+        - pinger
+        - portal
+        - root-cause-infe* # root-cause-infer
+      kubeskoop:
+        - inspector
+      lvs:
+        - lvscare
+      metrics-server:
+        - metrics-server
+      odigos:
+        - app
+        - odiglet
+        - odigosotelcol
+      openebs:
+        - exporter
+        - ndm # node-disk-manager
+        - ndo # node-disk-operator
+        - provisioner-loc* # provisioner-localpv
+      opentelemetry:
+        - otelcol-contrib
+      olm:
+        - catalog
+        - olm
+      prometheus:
+        - node_exporter
+        - operator # prometheus-operator
+        - prometheus
+        - prometheus-conf* # prometheus-config-reloader
+      radondb:
+        - xenon
+      victoriametrics:
+        - victoria-metric* # victoria-metrics-prod
+        - vmagent-prod
+    java:
+      skywalking:
+        - "*org.apache.skywalking.oap.server.starter.OAPServerStartUp"
+        - "*org.apache.skywalking.oap.server.webapp.ApplicationStartUp"
+        - "*skywalking-webapp.jar"
+      es:
+        - "*org.elasticsearch.bootstrap.Elasticsearch"
+        - "*/kindling/apm-agent-attach-cli*"
+      zookeeper:
+        - "*org.apache.zookeeper.server.quorum.QuorumPeerMain"
+      nacos:
+        - "*nacos-server.jar"
+      eureka-server:
+        - "eureka-server-*.jar"
