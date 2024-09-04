@@ -68,6 +68,8 @@ data:
       trace_api: jaeger.default:4318
       black_list:
         go:
+          alloy:
+            - alloy
           apisix:
             - apisix-ingress-*
           calico:
@@ -124,6 +126,7 @@ data:
             - pinger
             - portal
             - root-cause-infe*
+            - originx-apo-bac*
           kubeskoop:
             - inspector
           lvs:
@@ -141,6 +144,7 @@ data:
             - provisioner-loc*
           opentelemetry:
             - otelcol-contrib
+            - otelcol
           olm:
             - catalog
             - olm
@@ -154,6 +158,7 @@ data:
           victoriametrics:
             - victoria-metric*
             - vmagent-prod
+            - vmalert-prod
         java:
           skywalking:
             - "*org.apache.skywalking.oap.server.starter.OAPServerStartUp"

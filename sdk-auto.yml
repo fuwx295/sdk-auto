@@ -6,6 +6,8 @@ auto:
   scan_interval: 30
   black_list:
     go:
+      alloy:
+        - alloy
       apisix:
         - apisix-ingress-* # apisix-ingress-controller
       calico:
@@ -62,6 +64,7 @@ auto:
         - pinger
         - portal
         - root-cause-infe* # root-cause-infer
+        - originx-apo-bac*
       kubeskoop:
         - inspector
       lvs:
@@ -79,6 +82,7 @@ auto:
         - provisioner-loc* # provisioner-localpv
       opentelemetry:
         - otelcol-contrib
+        - otelcol
       olm:
         - catalog
         - olm
@@ -92,6 +96,7 @@ auto:
       victoriametrics:
         - victoria-metric* # victoria-metrics-prod
         - vmagent-prod
+        - vmalert-prod
     java:
       skywalking:
         - "*org.apache.skywalking.oap.server.starter.OAPServerStartUp"
