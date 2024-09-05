@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y curl clang gcc llvm make libbpf-dev
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading
 # them in subsequent builds if they change
-ENV GOPROXY https://goproxy.cn
 COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg \
     go mod download && go mod verify
