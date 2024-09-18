@@ -30,7 +30,8 @@ jobs:
       - name: Build
         run: |
           sudo apt-get update && sudo apt-get install -y curl clang gcc llvm make libbpf-dev
-          sudo chmod -R a+rwx /home/runner/go/pkg/mod/
+          go mod tidy
+          sudo chmod -R a+rwx /home/runner/go/pkg/mod
           make build-sdk
       
       - name: Archive Binary
