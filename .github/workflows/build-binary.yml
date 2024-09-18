@@ -1,0 +1,48 @@
+name: Build Binary
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.22
+      
+      - name: Generate App Version
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          COMMIT_HASH: ${{ github.sha }}
+        run: |
+          DATE=$(date +"%Y%m%d%H%M%S%Z")
+          APP_VERSION="${BRANCH_NAME}-${COMMIT_HASH::7}-${DATE}"
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: |
+          apt-get update && apt-get install -y curl clang gcc llvm make libbpf-dev
+          make build-sdk
+      
+      - name: Archive Binary
+        run: |
+          tar -czvf sdk-auto-${{ env.APP_VERSION }}.tar.gz originx-sdk-auto sdk-auto.yml
+      
+      - name: Upload to OSS
+        env:
+          OSS_ACCESS_KEY_ID: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          OSS_ACCESS_KEY_SECRET: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+          OSS_BUCKET: apo-oss
+          OSS_ENDPOINT: https://oss-cn-hangzhou.aliyuncs.com/
+        run: |
+          curl https://gosspublic.alicdn.com/ossutil/install.sh | sudo bash
+          sudo ossutil config -e $OSS_ENDPOINT -i $OSS_ACCESS_KEY_ID -k $OSS_ACCESS_KEY_SECRET -L CH -c /root/.ossutilconfig
+          sudo ossutil cp sdk-auto-${{ env.APP_VERSION }}.tar.gz oss://$OSS_BUCKET/sdk-auto-${{ env.APP_VERSION }}.tar.gz
