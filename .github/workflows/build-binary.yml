@@ -29,7 +29,7 @@ jobs:
 
       - name: Build
         run: |
-          apt-get update && apt-get install -y curl clang gcc llvm make libbpf-dev
+          sudo apt-get update && sudo apt-get install -y curl clang gcc llvm make libbpf-dev
           make build-sdk
       
       - name: Archive Binary
