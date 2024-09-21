@@ -29,7 +29,7 @@ jobs:
             sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* &&
             sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* &&
             yum -y update &&
-            yum -y install gcc clang llvm make wget curl libbpf-devel &&
+            yum -y install gcc llvm-toolset-7 make wget curl libbpf-devel &&
             wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz && 
             rm -rf /usr/local/go && 
             tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz &&
