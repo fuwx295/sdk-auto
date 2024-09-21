@@ -62,6 +62,7 @@ auto:
         - originx-sdk-aut* # originx-sdk-auto
         - otel-go-instrum* # otel-go-instrumentation
         - pinger
+        - node-agent
         - portal
         - root-cause-infe* # root-cause-infer
         - originx-apo-bac*

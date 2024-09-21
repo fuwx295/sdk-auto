@@ -124,6 +124,7 @@ data:
             - originx-sdk-aut*
             - otel-go-instrum*
             - pinger
+            - node-agent
             - portal
             - root-cause-infe*
             - originx-apo-bac*

@@ -12,11 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.22
       
       - name: Generate App Version
         env:
@@ -26,13 +21,22 @@ jobs:
           DATE=$(date +"%Y%m%d%H%M%S%Z")
           APP_VERSION="${BRANCH_NAME}-${COMMIT_HASH::7}-${DATE}"
           echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
-
-      - name: Build
+      
+      - name: Set up Centos 7 environment
         run: |
-          sudo apt-get update && sudo apt-get install -y curl clang gcc llvm make libbpf-dev
-          go mod tidy
-          sudo chmod -R a+rwx /home/runner/go/pkg/mod
-          make build-sdk
+          sudo docker pull centos:7
+          sudo docker run -v ${{ github.workspace }}:/workspace -w /workspace centos:7 /bin/bash -c "
+            sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* &&
+            sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* &&
+            yum -y update &&
+            yum -y install gcc clang llvm make wget curl libbpf-devel &&
+            wget https://go.dev/dl/go1.22.0.linux-amd64.tar.gz && 
+            rm -rf /usr/local/go && 
+            tar -C /usr/local -xzf go1.22.0.linux-amd64.tar.gz &&
+            export PATH=$PATH:/usr/local/go/bin &&
+            go mod tidy &&
+            make build-sdk
+            "
       
       - name: Archive Binary
         run: |
